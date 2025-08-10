@@ -38,7 +38,6 @@ def ask_chat_bot(mensaje):
     temperature=0.2,
     max_tokens=64,
     )
-    print(response)
     return response.choices[0].message.content.strip()
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -47,9 +46,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
     
     @database_sync_to_async
     def verify_token(self, token_dict):
-        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU0MjMxNTE4LCJpYXQiOjE3NTQxOTkwOTcsImp0aSI6ImZiODk3YzQ4ZjQxNzQ2M2E5NTc4YmNiYjY3NzQ3ZTJhIiwidXNlcl9pZCI6NH0.IkSlyjygNCRXF_psUPdQu6_SP61zBKCPpO8EtgXkDiU"
+        token = token_dict['token']
         try:
-            print(token)
             decoded_token = AccessToken(token)
         except InvalidToken as e:
             print(f"Token is invalid or expired: {e}")
@@ -145,7 +143,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'message' : mensaje
                 }
             )
-            # print("prueba")
     
     # Método a ejecutar para mandar la información establecida en el método anterior, el nombre de coloca en Type.
     
@@ -191,6 +188,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
     
     @database_sync_to_async
     def save_message(self, user, message):
-        print("funciono")
         Messages.objects.create(room=Rooms.objects.get(id=self.room_id), author=user, content=message)
         return 

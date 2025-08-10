@@ -101,14 +101,14 @@ ASGI_APPLICATION = 'backend.asgi.application'
 # Django channels layer definition
 
 # ! For using Redis locally with the docker container
-""" CHANNEL_LAYERS = {
+CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [("127.0.0.1", 6379)],
         },
     },
-} """
+}
 
 # ! For using Redis remotely with the railway url
 """ CHANNEL_LAYERS = {
@@ -122,11 +122,11 @@ ASGI_APPLICATION = 'backend.asgi.application'
 
 
 # ! for using the in memory channel layer
-CHANNEL_LAYERS = {
+""" CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     },
-}
+} """
 
 
 # Database
