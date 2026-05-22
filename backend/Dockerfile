@@ -10,6 +10,13 @@ ENV PYTHONUNBUFFERED 1
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
+WORKDIR /app
+
+RUN python -m venv /home/vscode/venv
+
+ENV PATH="/home/vscode/venv/bin:$PATH"
+
+COPY requirements.txt .
 
 RUN pip3 install -r requirements.txt
 
