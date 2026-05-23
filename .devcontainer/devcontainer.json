@@ -3,7 +3,7 @@
 {
 	"name": "Python 3 & PostgreSQL",
 	"dockerComposeFile": "../docker-compose.yml",
-	"service": "frontend",
+	"service": "backend",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -17,9 +17,46 @@
 		"vscode": {
 			"settings": {
 				"python.defaultInterpreterPath": "/home/vscode/venv/bin/python"
-			}
+			},
+			"extensions": [
+				// Javascript
+				"bradlc.vscode-tailwindcss",
+				"britesnow.vscode-toggle-quotes",
+				"dbaeumer.vscode-eslint",
+
+				// General
+				"esbenp.prettier-vscode",
+				"aaron-bond.better-comments",
+				"johnpapa.vscode-peacock",
+				"editorconfig.editorconfig",
+				"alefragnani.bookmarks",
+				"formulahendry.code-runner",
+				"streetsidesoftware.code-spell-checker",
+				"streetsidesoftware.code-spell-checker-spanish",
+				"usernamehw.errorlens",
+				"kisstkondoros.vscode-gutter-preview",
+				"oderwat.indent-rainbow",
+				"quicktype.quicktype",
+				"helixquar.randomeverything",
+				"wayou.vscode-todo-highlight",
+				"gruntfuggly.todo-tree",
+
+				// Python
+				"ms-python.python",
+				"ms-python.black-formatter",
+				"ms-python.debugpy",
+				"ms-python.vscode-pylance",
+				"ms-python.vscode-python-envs",
+				"njpwerner.autodocstring",
+				"batisteo.vscode-django",
+				"bibhasdn.django-snippets",
+				"bigonesystems.django",
+				"shamanu4.django-intellisense",
+				"bibhasdn.django-html",
+				"wholroyd.jinja"
+			]
 		}
-	}
+	},
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
 }
