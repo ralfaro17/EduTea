@@ -25,5 +25,5 @@ RUN mkdir -p /home/vscode/.vscode-server/extensions \
 
 USER vscode
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver"]
 

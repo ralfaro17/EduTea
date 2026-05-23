@@ -6,9 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
 
-    command: ["pnpm", "--filter", "frontend", "dev"]
-    ports:
-      - "4173:4173"
+    command: ["pnpm", "--filter", "frontend", "dev","--host"]
     volumes:
       - .:/app
       - /app/node_modules/

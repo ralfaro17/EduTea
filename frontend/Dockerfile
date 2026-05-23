@@ -8,8 +8,8 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml* ./
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --ignore-scripts
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --ignore-scripts
 
 COPY . .
 EXPOSE 4173
-CMD [ "pnpm", "dev" ]
+CMD [ "pnpm", "dev", "--host"]
