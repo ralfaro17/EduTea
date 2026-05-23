@@ -9,6 +9,7 @@ services:
     init: true
     volumes:
       - ../..:/workspaces:cached
+      - vscode-extensions:/home/vscode/.vscode-server/extensions
     depends_on:
       db:
         condition: service_started

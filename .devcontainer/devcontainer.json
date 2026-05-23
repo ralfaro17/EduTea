@@ -5,6 +5,9 @@
 	"dockerComposeFile": "../docker-compose.yml",
 	"service": "backend",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"mounts": [
+		"source=vscode-extensions,target=/home/vscode/.vscode-server/extensions,type=volume"
+	],
 	"runServices": ["backend", "frontend", "db"],
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},

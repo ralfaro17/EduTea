@@ -3,3 +3,6 @@ name: my-monorepo-app
 include:
   - ./backend/docker-compose.yml
   - ./frontend/docker-compose.yml
+
+volumes:
+  vscode-extensions:
