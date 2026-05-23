@@ -13,7 +13,7 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 RUN python -m venv /home/vscode/venv
-
+RUN chown -R vscode:vscode /home/vscode/venv
 ENV PATH="/home/vscode/venv/bin:$PATH"
 
 COPY requirements.txt .

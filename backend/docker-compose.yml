@@ -9,18 +9,17 @@ services:
     init: true
     volumes:
       - ../..:/workspaces:cached
-      - vscode-extensions:/home/vscode/.vscode-server/extensions
-    # Overrides default command so things don't shut down after the process ends.
     depends_on:
       db:
         condition: service_started
+    # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    network_mode: service:db
 
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
+    network_mode: service:db
 
   db:
     image: postgres:latest

@@ -12,4 +12,4 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 COPY . .
 EXPOSE 4173
-CMD [ "pnpm", "dev", "--host"]
+CMD ["pnpm", "--filter", "frontend", "dev","--host", "0.0.0.0"]

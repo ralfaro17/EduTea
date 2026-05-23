@@ -1,25 +1,68 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
+// README at: https://github.com/devcontainers/templates/tree/main/src/postgres
 {
-	"name": "Node.js",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/javascript-node:4-24-trixie",
-	"features": {
-		"ghcr.io/devcontainers-extra/features/pnpm:2": {}
-	}
-
+	"name": "Python 3 & PostgreSQL",
+	"dockerComposeFile": "../docker-compose.yml",
+	"service": "backend",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"runServices": ["backend", "frontend"],
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-
+	// This can be used to network with other containers or the host.
+	"forwardPorts": [
+		4173, // Frontend dev server target port
+		5173, // Alternative frontend vite port
+		5174, // Alternative frontend vite port
+		8000, // Django default port
+		5432 // PostgreSQL database port
+	],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "yarn install",
-
+	// "postCreateCommand": "pip install --user -r requirements.txt",
+	// "postStartCommand": "pnpm dev --host & python manage.py runserver",
 	// Configure tool-specific properties.
-	// "customizations": {},
-
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"python.defaultInterpreterPath": "/home/vscode/venv/bin/python"
+			},
+			"extensions": [
+				// Javascript
+				"bradlc.vscode-tailwindcss",
+				"britesnow.vscode-toggle-quotes",
+				"dbaeumer.vscode-eslint",
+				// General
+				"esbenp.prettier-vscode",
+				"aaron-bond.better-comments",
+				"johnpapa.vscode-peacock",
+				"editorconfig.editorconfig",
+				"alefragnani.bookmarks",
+				"formulahendry.code-runner",
+				"streetsidesoftware.code-spell-checker",
+				"streetsidesoftware.code-spell-checker-spanish",
+				"usernamehw.errorlens",
+				"kisstkondoros.vscode-gutter-preview",
+				"oderwat.indent-rainbow",
+				"quicktype.quicktype",
+				"helixquar.randomeverything",
+				"wayou.vscode-todo-highlight",
+				"gruntfuggly.todo-tree",
+				// Python
+				"ms-python.python",
+				"ms-python.black-formatter",
+				"ms-python.debugpy",
+				"ms-python.vscode-pylance",
+				"ms-python.vscode-python-envs",
+				"njpwerner.autodocstring",
+				"batisteo.vscode-django",
+				"bibhasdn.django-snippets",
+				"bigonesystems.django",
+				"shamanu4.django-intellisense",
+				"bibhasdn.django-html",
+				"wholroyd.jinja"
+			]
+		}
+	}
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
 }
