@@ -4,10 +4,11 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
 
+    command: ["pnpm", "--filter", "frontend", "dev"]
+    ports:
+      - "4173:4173"
     volumes:
-      - ../..:/workspaces:cached
-
-    # Overrides default command so things don't shut down after the process ends.
-    command: sleep infinity
+      - .:/app
+      - /app/node_modules/

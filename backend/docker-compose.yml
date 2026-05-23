@@ -6,10 +6,14 @@ services:
       context: .
       dockerfile: ./Dockerfile
 
+    init: true
     volumes:
       - ../..:/workspaces:cached
-
+      - vscode-extensions:/home/vscode/.vscode-server/extensions
     # Overrides default command so things don't shut down after the process ends.
+    depends_on:
+      db:
+        condition: service_started
     command: sleep infinity
 
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.

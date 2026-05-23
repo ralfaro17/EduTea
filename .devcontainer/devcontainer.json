@@ -5,11 +5,17 @@
 	"dockerComposeFile": "../docker-compose.yml",
 	"service": "backend",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"mounts": [
+		"source=vscode-extensions,target=/home/vscode/.vscode-server/extensions,type=volume"
+	],
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// This can be used to network with other containers or the host.
-	// "forwardPorts": [5000, 5432],
+	"forwardPorts": [
+		4173,
+		5432
+	],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "pip install --user -r requirements.txt",
 	// Configure tool-specific properties.
@@ -23,7 +29,6 @@
 				"bradlc.vscode-tailwindcss",
 				"britesnow.vscode-toggle-quotes",
 				"dbaeumer.vscode-eslint",
-
 				// General
 				"esbenp.prettier-vscode",
 				"aaron-bond.better-comments",
@@ -40,7 +45,6 @@
 				"helixquar.randomeverything",
 				"wayou.vscode-todo-highlight",
 				"gruntfuggly.todo-tree",
-
 				// Python
 				"ms-python.python",
 				"ms-python.black-formatter",

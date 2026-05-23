@@ -20,5 +20,10 @@ COPY requirements.txt .
 
 RUN pip3 install -r requirements.txt
 
+RUN mkdir -p /home/vscode/.vscode-server/extensions \
+    && chown -R vscode:vscode /home/vscode/.vscode-server
+
+USER vscode
+
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
