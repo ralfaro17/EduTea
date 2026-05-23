@@ -15,6 +15,7 @@ from string import ascii_uppercase
 # useful methods
 def generate_code():
     generar = True
+    code = ""
     while generar:
         code = ""
         for i in range(12):
@@ -110,7 +111,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
 
-    def has_perm(self, permission, obj=None):
+    def has_perm(self, perm, obj=None):
         return True
 
     def has_module_perms(self, app_label):
@@ -181,7 +182,8 @@ class Students_Rooms(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self) -> str:
-        pass
+        # TODO: Implement a more meaningful string representation for the model
+        return "placeholder text"
 
 
 class Events(models.Model):
@@ -206,7 +208,8 @@ class Events(models.Model):
     )
 
     def __str__(self) -> str:
-        pass
+        # TODO: Implement a more meaningful string representation for the model
+        return "placeholder text"
 
 
 class Badges(models.Model):
@@ -216,7 +219,8 @@ class Badges(models.Model):
     users = models.ManyToManyField(User, related_name="badge_users")
 
     def __str__(self) -> str:
-        pass
+        # TODO: Implement a more meaningful string representation for the model
+        return "placeholder text"
 
 
 class Submissions(models.Model):
@@ -231,4 +235,5 @@ class Submissions(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self) -> str:
-        pass
+        # TODO: Implement a more meaningful string representation for the model
+        return "placeholder text"
