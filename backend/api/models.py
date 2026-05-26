@@ -80,6 +80,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ADMIN = 3
 
     # Django user field
+    id: models.UUIDField
     date_joined = models.DateTimeField(
         default=timezone.now, editable=True, verbose_name="Date Joined"
     )
@@ -132,6 +133,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Rooms(models.Model):
+    id: models.UUIDField
     room_name = models.CharField(max_length=64)
     room_code = models.CharField(max_length=12, unique=True, default=generate_code)
     description = models.CharField(max_length=512)
@@ -169,7 +171,7 @@ class Messages(models.Model):
     sent_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.content + " | " + self.author.email
+        return  self.content + " | " + self.author.email
 
 
 class Students_Rooms(models.Model):

@@ -18,7 +18,9 @@
 		5173, // Alternative frontend vite port
 		5174, // Alternative frontend vite port
 		8000, // Django default port
-		5432 // PostgreSQL database port
+		5432, // PostgreSQL database port
+		1025, // Mailpit web interface port
+		8025  // Mailpit SMTP port
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "pip install --user -r requirements.txt",

@@ -1,5 +1,5 @@
 from .serializers import *
-from .models import *
+from .models import User, Rooms, Messages, Students_Rooms, Events, Badges, Submissions
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,7 +13,7 @@ from rest_framework import permissions
 
 from django.contrib.auth import get_user_model
 from djoser.views import UserViewSet
-from string import ascii_uppercase
+# from string import ascii_uppercase
 
 from .aws_s3 import *
 
@@ -73,6 +73,9 @@ class RoomsList(APIView):
             rooms = Rooms.objects.all()
             if limit:
                 rooms = rooms[:limit]
+        else:
+            # default to empty queryset to avoid unbound variable
+            rooms = Rooms.objects.none()
         paginator = self.pagination_class()
         result_page = paginator.paginate_queryset(rooms, request)
         serializer = RoomsSerializer(result_page, many=True)

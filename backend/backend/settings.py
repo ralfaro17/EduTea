@@ -199,8 +199,8 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # EMAIL CONFIG
-if os.getenv('ENVIRONMENT') == 'development':
-    # ! For using mailhog
+if os.getenv('ENVIRONMENT') == 'dev':
+    # ! For using mailpit
     EMAIL_HOST = "localhost" 
     EMAIL_PORT = "1025" 
     EMAIL_HOST_USER = "" 

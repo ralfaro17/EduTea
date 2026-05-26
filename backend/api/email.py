@@ -10,6 +10,8 @@ class CustomActivationEmail(email.ActivationEmail):
         context = super().get_context_data()
         image_url = static('email/logo2.png')
         user = context.get('user')
+        if user is None:
+            raise ValueError("User not found in context")
         context['uid'] = utils.encode_uid(user.pk)
         context['token'] = default_token_generator.make_token(user)
         context['url'] = settings.ACTIVATION_URL.format(**context)

@@ -13,6 +13,8 @@ services:
     depends_on:
       db:
         condition: service_started
+      mailpit:
+        condition: service_started
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
@@ -35,5 +37,19 @@ services:
     # Add "forwardPorts": [5432] to **devcontainer.json** to forward PostgreSQL locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
+  mailpit:
+    image: axllent/mailpit
+    container_name: mailpit
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    network_mode: service:db
+
 volumes:
   postgres-data:
+  mailpit-data:
