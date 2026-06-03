@@ -19,13 +19,12 @@ services:
         condition: service_healthy
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
+    network_mode: "service:db"
 
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
 
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
-    networks:
-      - app-network
 
   db:
     image: postgres:latest
@@ -43,8 +42,6 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-    networks:
-      - app-network
     # Add "forwardPorts": [5432] to **devcontainer.json** to forward PostgreSQL locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
@@ -59,12 +56,7 @@ services:
       MP_DATABASE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge
+    network_mode: "service:db"
 
 volumes:
   postgres-data:

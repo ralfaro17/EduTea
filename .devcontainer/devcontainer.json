@@ -32,7 +32,11 @@
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	"forwardPorts": [
+		5432, // PostgreSQL database port
+		1025, // Mailpit web interface port
+		8025  // Mailpit SMTP port
+	],
 
 	// Configure tool-specific properties.
 	"customizations": {
