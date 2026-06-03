@@ -1,6 +1,6 @@
 
 {
-	"name": "Monorepo devcontainer Edutea",
+	"name": "EduTea Monorepo devcontainer",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",

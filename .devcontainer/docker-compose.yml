@@ -1,4 +1,4 @@
-name: monorepo-dev-compose-edutea
+name: edutea-monorepo-dev-compose
 
 services:
   app:
