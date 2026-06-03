@@ -1,7 +1,12 @@
 {
     "python-envs.pythonProjects": [],
     "cSpell.words": [
-        "devcontainers"
+        "devcontainers",
+        "edutea",
+        "healthcheck",
+        "mailpit",
+        "postgres",
+        "postgresql"
     ],
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#718e38",

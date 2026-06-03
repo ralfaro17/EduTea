@@ -2,6 +2,7 @@ name: edutea-monorepo-dev-compose
 
 services:
   app:
+    container_name: edutea-app
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
@@ -28,7 +29,7 @@ services:
 
   db:
     image: postgres:latest
-    container_name: postgres-edutea
+    container_name: edutea-postgres
     restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql
@@ -47,7 +48,7 @@ services:
 
   mailpit:
     image: axllent/mailpit
-    container_name: mailpit-edutea
+    container_name: edutea-mailpit
     restart: unless-stopped
     volumes:
       - ./data:/data
