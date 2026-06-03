@@ -1,20 +1,22 @@
-name: my-backend-compose
+name: monorepo-dev-compose-edutea
 
 services:
-  backend:
+  app:
     build:
-      context: .
-      dockerfile: ./Dockerfile
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
 
+    env_file:
+      - .env
     init: true
     volumes:
       - ../..:/workspaces:cached
       - vscode-extensions:/home/vscode/.vscode-server/extensions
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
       mailpit:
-        condition: service_started
+        condition: service_healthy
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
@@ -22,24 +24,33 @@ services:
 
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
-    network_mode: service:db
+    networks:
+      - app-network
 
   db:
     image: postgres:latest
+    container_name: postgres-edutea
     restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-
+    networks:
+      - app-network
     # Add "forwardPorts": [5432] to **devcontainer.json** to forward PostgreSQL locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
   mailpit:
     image: axllent/mailpit
-    container_name: mailpit
+    container_name: mailpit-edutea
     restart: unless-stopped
     volumes:
       - ./data:/data
@@ -48,8 +59,13 @@ services:
       MP_DATABASE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
-    network_mode: service:db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   postgres-data:
-  mailpit-data:
+  vscode-extensions:

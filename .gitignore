@@ -6,3 +6,6 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 .pnpm-store
+.env
+.env.local
+.env.prod

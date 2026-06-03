@@ -1,36 +1,42 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/postgres
+
 {
-	"name": "Python 3 & PostgreSQL",
-	"dockerComposeFile": "../docker-compose.yml",
-	"service": "backend",
+	"name": "Monorepo devcontainer Edutea",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
 	"mounts": [
 		"source=vscode-extensions,target=/home/vscode/.vscode-server/extensions,type=volume"
 	],
-	"runServices": ["backend", "frontend", "db"],
+
 	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:3": {
+			"moby": false,
+			"azureDnsAutoDetection": true,
+			"installDockerBuildx": true,
+			"version": "latest",
+			"dockerDashComposeVersion": "v2"
+		},
+		"ghcr.io/devcontainers/features/node:2": {
+			"nodeGypDependencies": true,
+			"version": "lts",
+			"npmVersion": "none",
+			"pnpmVersion": "latest",
+			"nvmVersion": "latest"
+		},
+		"ghcr.io/devcontainers/features/python:1": {
+			"installTools": true,
+			"version": "os-provided"
+		}
+	},
+
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// This can be used to network with other containers or the host.
-	"forwardPorts": [
-		4173, // Frontend dev server target port
-		5173, // Alternative frontend vite port
-		5174, // Alternative frontend vite port
-		8000, // Django default port
-		5432, // PostgreSQL database port
-		1025, // Mailpit web interface port
-		8025  // Mailpit SMTP port
-	],
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "pip install --user -r requirements.txt",
-	// "postStartCommand": "pnpm dev --host & python manage.py runserver",
+	// "forwardPorts": [],
+
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
-			"settings": {
-				"python.defaultInterpreterPath": "/home/vscode/venv/bin/python"
-			},
 			"extensions": [
 				// Javascript
 				"bradlc.vscode-tailwindcss",
@@ -67,7 +73,8 @@
 				"wholroyd.jinja"
 			]
 		}
-	}
+	},
+
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+	// "remoteUser": "vscode"
 }
