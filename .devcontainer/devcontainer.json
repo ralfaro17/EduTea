@@ -25,10 +25,7 @@
 			"pnpmVersion": "latest",
 			"nvmVersion": "latest"
 		},
-		"ghcr.io/devcontainers/features/python:1": {
-			"installTools": true,
-			"version": "os-provided"
-		}
+		"ghcr.io/devcontainers-extra/features/uv:1": {}
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
