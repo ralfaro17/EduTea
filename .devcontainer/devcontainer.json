@@ -63,7 +63,6 @@
 				"gruntfuggly.todo-tree",
 				// Python
 				"ms-python.python",
-				"ms-python.black-formatter",
 				"ms-python.debugpy",
 				"ms-python.vscode-pylance",
 				"ms-python.vscode-python-envs",

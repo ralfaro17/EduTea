@@ -1,3 +1,12 @@
+[tool.uv]
+exclude-newer = "5 days"
+
+[tool.pyrefly]
+project-includes = [
+    "**/*.py*",
+    "**/*.ipynb",
+]
+
 [project]
 name = "backend"
 version = "0.1.0"
@@ -50,6 +59,7 @@ dependencies = [
     "pydantic-core==2.41.5",
     "pyjwt==2.10.1",
     "pyopenssl==25.3.0",
+    "pyrefly>=1.0.0",
     "python-dateutil==2.9.0.post0",
     "python-dotenv==1.2.1",
     "python3-openid==3.2.0",
