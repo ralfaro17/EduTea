@@ -1,23 +1,25 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer
-from .models import *
+from .models import User, Rooms, Messages, Students_Rooms, Events, Badges, Submissions
 
-User = get_user_model()
+from typing import Type, cast
+
+Users = cast(Type[User], get_user_model())
 
 class UserCreationSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
-        model = User
+        model = Users
         fields = ('id', 'email', 'username', 'first_name', 'last_name', 'user_type', 'biography', 'password')
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = Users
         fields = '__all__'
         read_only_fields = ['id', 'last_login', 'date_joined']
     
     def validate_username(self, value):
-        if User.objects.filter(username=value).exists():
+        if Users.objects.filter(username=value).exists():
             raise serializers.ValidationError("This username already exists")
         return value
 
@@ -37,9 +39,9 @@ class RoomsSerializer(serializers.ModelSerializer):
         return value
 
     def validate_teacher(self, value):
-        if not User.objects.filter(id=value.id).exists():   
+        if not Users.objects.filter(id=value.id).exists():   
             raise serializers.ValidationError("This user does not exist")
-        if User.objects.get(id=value.id).user_type != User.UserTypes.TEACHER:
+        if Users.objects.get(id=value.id).user_type != Users.UserTypes.TEACHER:
             raise serializers.ValidationError("This user is not a teacher")
         return value
 
@@ -50,7 +52,7 @@ class MessagesSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
     def validate_author(self, value):
-        if not User.objects.filter(id=value.id).exists():
+        if not Users.objects.filter(id=value.id).exists():
             raise serializers.ValidationError("This user does not exist")
         return value
     
@@ -67,7 +69,7 @@ class StudentsRoomsSerializer(serializers.ModelSerializer):
     
     def validate_student(self, value):
         print(value)
-        if not User.objects.filter(id=value.id).exists():
+        if not Users.objects.filter(id=value.id).exists():
             raise serializers.ValidationError("This user does not exist")
         return value
     
@@ -83,7 +85,7 @@ class EventsSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
     def validate_author(self, value):
-        if not User.objects.filter(id=value).exists():
+        if not Users.objects.filter(id=value).exists():
             raise serializers.ValidationError("This user does not exist")
         return value
     
@@ -100,7 +102,7 @@ class BadgesSerializer(serializers.ModelSerializer):
     
     def validate_users(self, value):
         for user in value:
-            if not User.objects.filter(id=user).exists():
+            if not Users.objects.filter(id=user).exists():
                 raise serializers.ValidationError("This user does not exist")
         return value
 
@@ -116,6 +118,6 @@ class SubmissionsSerializer(serializers.ModelSerializer):
         return value
     
     def validate_user(self, value):
-        if not User.objects.filter(id=value).exists():
+        if not Users.objects.filter(id=value).exists():
             raise serializers.ValidationError("This user does not exist")
         return value

@@ -1,5 +1,4 @@
 from django.contrib.auth.models import (
-    AbstractUser,
     AbstractBaseUser,
     BaseUserManager,
     PermissionsMixin,
@@ -11,8 +10,11 @@ from django.core.exceptions import ValidationError
 import random
 from string import ascii_uppercase
 
+from typing import ClassVar
 
 # useful methods
+
+
 def generate_code():
     generar = True
     code = ""
@@ -32,8 +34,8 @@ def generate_code():
 
 
 # Create your models here.
-class UserManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
+class UserManager(BaseUserManager["User"]):
+    def create_user(self, email: str | None=None, password=None, **extra_fields):
         if not email:
             raise ValueError("The email field must be set")
 
@@ -44,9 +46,11 @@ class UserManager(BaseUserManager):
             raise ValueError("The password field must be set")
 
         if (
-            extra_fields.get("user_type") == 1 or extra_fields.get("user_type") == 2
+            extra_fields.get("user_type") == 1 or extra_fields.get(
+                "user_type") == 2
         ) and (extra_fields.get("is_staff") or extra_fields.get("is_superuser")):
-            raise ValueError("Students and Teachers cannot be staff or superusers")
+            raise ValueError(
+                "Students and Teachers cannot be staff or superusers")
 
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
@@ -54,7 +58,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password=None, **extra_fields):
+    def create_superuser(self, email: str, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("user_type", 3)
@@ -80,7 +84,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         ADMIN = 3
 
     # Django user field
-    id: models.UUIDField
     date_joined = models.DateTimeField(
         default=timezone.now, editable=True, verbose_name="Date Joined"
     )
@@ -90,7 +93,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=150)
     is_active = models.BooleanField(default=True, verbose_name="Is Active")
     is_staff = models.BooleanField(default=False, verbose_name="Is Staff")
-    is_superuser = models.BooleanField(default=False, verbose_name="Is Superuser")
+    is_superuser = models.BooleanField(
+        default=False, verbose_name="Is Superuser")
 
     # New user fields
     user_type = models.IntegerField(
@@ -103,10 +107,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # Properties
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "first_name", "last_name", "user_type", "biography"]
+    REQUIRED_FIELDS = ["username", "first_name",
+                       "last_name", "user_type", "biography"]
 
     # Associated user manager
-    objects = UserManager()
+    objects: ClassVar[UserManager] = UserManager()
 
     # Methods
     def get_full_name(self):
@@ -133,9 +138,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Rooms(models.Model):
-    id: models.UUIDField
+    objects = models.Manager()
     room_name = models.CharField(max_length=64)
-    room_code = models.CharField(max_length=12, unique=True, default=generate_code)
+    room_code = models.CharField(
+        max_length=12, unique=True, default=generate_code)
     description = models.CharField(max_length=512)
     teacher = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="room_teacher", blank=True, null=True
@@ -154,13 +160,15 @@ class Rooms(models.Model):
 
     def clean(self):
         if self.teacher and self.teacher.user_type != User.UserTypes.TEACHER:
-            raise ValidationError("The assigned teacher must be a user of type 'TEACHER'.")
+            raise ValidationError(
+                "The assigned teacher must be a user of type 'TEACHER'.")
 
     def __str__(self):
         return self.room_name
 
 
 class Messages(models.Model):
+    objects = models.Manager()
     room = models.ForeignKey(
         Rooms, on_delete=models.CASCADE, related_name="message_room"
     )
@@ -171,10 +179,11 @@ class Messages(models.Model):
     sent_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return  self.content + " | " + self.author.email
+        return self.content + " | " + self.author.email
 
 
 class Students_Rooms(models.Model):
+    objects = models.Manager()
     student = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="student_room_student"
     )
@@ -189,7 +198,8 @@ class Students_Rooms(models.Model):
 
 
 class Events(models.Model):
-    room = models.ForeignKey(Rooms, on_delete=models.CASCADE, related_name="event_room")
+    room = models.ForeignKey(
+        Rooms, on_delete=models.CASCADE, related_name="event_room")
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="event_author"
     )

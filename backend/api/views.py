@@ -1,27 +1,28 @@
-from .serializers import *
-from .models import User, Rooms, Messages, Students_Rooms, Events, Badges, Submissions
+from .serializers import MessagesSerializer, RoomsSerializer, StudentsRoomsSerializer
+from .models import User, Rooms, Messages, Students_Rooms
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.decorators import api_view, permission_classes
+# from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.throttling import UserRateThrottle
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework import permissions
+# from rest_framework_simplejwt.authentication import JWTAuthentication
+# from rest_framework import permissions
 
 from django.contrib.auth import get_user_model
 from djoser.views import UserViewSet
 # from string import ascii_uppercase
 
-from .aws_s3 import *
-
-import random
-import json
+from typing import Type, cast
 
 
-Users = get_user_model()
+# import random
+# import json
+
+
+Users = cast(Type[User], get_user_model())
 
 
 class ResendActivationThrottle(UserRateThrottle):
@@ -84,7 +85,7 @@ class RoomsList(APIView):
     def post(self, response):
         try:
             teacher = Users.objects.get(email=response.data["teacher_email"])
-        except Exception as e:
+        except Users.DoesNotExist:
             return Response({"error": "this teacher does not exist"}, status = status.HTTP_404_NOT_FOUND)
         
         if teacher.user_type != User.UserTypes.TEACHER:
@@ -107,7 +108,7 @@ class RoomDetails(APIView):
     def get(self, request, room_id):
         try:
             room = Rooms.objects.get(id = room_id)
-        except Exception as e:
+        except Rooms.DoesNotExist:
             return Response({"error": "this room does not exist"}, status = status.HTTP_404_NOT_FOUND)
         
         if not room.is_active:
@@ -122,7 +123,7 @@ class RoomDetails(APIView):
         
         try:
             room = Rooms.objects.get(id = room_id)
-        except Exception as e:
+        except Rooms.DoesNotExist:
             return Response({"error": "this room does not exist"}, status = status.HTTP_404_NOT_FOUND)
         
         if not room.is_active:
@@ -142,7 +143,7 @@ class RoomDetails(APIView):
         
         try:
             room = Rooms.objects.get(id = room_id)
-        except Exception as e:
+        except Rooms.DoesNotExist:
             return Response({"error": "this room does not exist"}, status = status.HTTP_404_NOT_FOUND)
         
         if not room.is_active:
@@ -160,7 +161,7 @@ class RoomDetails(APIView):
         
         try:
             room = Rooms.objects.get(id = room_id)
-        except Exception as e:
+        except Rooms.DoesNotExist:
             return Response({"error": "this room does not exist"}, status = status.HTTP_404_NOT_FOUND)
         
         if not room.is_active:
@@ -192,7 +193,7 @@ class StudentsRoomsList(APIView):
             return Response({"error": "you are not a student"}, status = status.HTTP_403_FORBIDDEN)
         try:
             room = Rooms.objects.get(room_code=request.data["room_code"])
-        except Exception as e:
+        except Rooms.DoesNotExist:
             return Response({"error": "this room does not exist"}, status = status.HTTP_404_NOT_FOUND)
         
         if not room.is_active:
@@ -221,7 +222,7 @@ class StudentRoomDetails(APIView):
     def get(self, request, id):
         try:
             student_room = Students_Rooms.objects.get(id = id)
-        except Exception as e:
+        except Students_Rooms.DoesNotExist:
             return Response({"error": "this student is not part of the room"}, status = status.HTTP_404_NOT_FOUND)
         
         if not student_room.is_active:
@@ -233,7 +234,7 @@ class StudentRoomDetails(APIView):
     def put(self, request, id):
         try:
             student_room = Students_Rooms.objects.get(id = id)
-        except Exception as e:
+        except Students_Rooms.DoesNotExist:
             return Response({"error": "this student room does not exist"}, status = status.HTTP_404_NOT_FOUND)
         
         if not student_room.is_active:
@@ -249,7 +250,7 @@ class StudentRoomDetails(APIView):
     def patch(self, request, id):
         try:
             student_room = Students_Rooms.objects.get(id = id)
-        except Exception as e:
+        except Students_Rooms.DoesNotExist:
             return Response({"error": "this student is not part of the room"}, status = status.HTTP_404_NOT_FOUND)
         
         if not student_room.is_active:
@@ -265,7 +266,7 @@ class StudentRoomDetails(APIView):
     def delete(self, request, id):
         try:
             student_room = Students_Rooms.objects.get(id = id)
-        except Exception as e:
+        except Students_Rooms.DoesNotExist:
             return Response({"error": "this student is not part of the room"}, status = status.HTTP_404_NOT_FOUND)
         
         if not student_room.is_active:
@@ -291,7 +292,7 @@ class MessagesList(APIView):
             return Response({"error": "room id is required"}, status = status.HTTP_400_BAD_REQUEST)
         try:
             room = Rooms.objects.get(id = room_id)
-        except Exception as e:
+        except Rooms.DoesNotExist:
             return Response({"error": "this room does not exist"}, status = status.HTTP_404_NOT_FOUND)
         
         messages = Messages.objects.filter(room=room).annotate()
@@ -321,7 +322,7 @@ class MessagesListUpdate(APIView):
     def get(self, request, id):
         try:
             message = Messages.objects.get(id = id)
-        except Exception as e:
+        except Messages.DoesNotExist:
             return Response({"error": "this message does not exist"}, status = status.HTTP_404_NOT_FOUND)
         
         serializer = MessagesSerializer(message)
@@ -329,7 +330,7 @@ class MessagesListUpdate(APIView):
     def put(self, request, id):
         try:
             message = Messages.objects.get(id = id)
-        except Exception as e:
+        except Messages.DoesNotExist:
             return Response({"error": "this message does not exist"}, status = status.HTTP_404_NOT_FOUND)
         
         serializer = MessagesSerializer(message, data=request.data)
@@ -342,7 +343,7 @@ class MessagesListUpdate(APIView):
     def patch(self, request, id):
         try:
             message = Messages.objects.get(id = id)
-        except Exception as e:
+        except Messages.DoesNotExist:
             return Response({"error": "this message does not exist"}, status = status.HTTP_404_NOT_FOUND)
         
         serializer = MessagesSerializer(message, data=request.data, partial=True)
@@ -355,7 +356,7 @@ class MessagesListUpdate(APIView):
     def delete(self, request, id):
         try:
             message = Messages.objects.get(id = id)
-        except Exception as e:
+        except Messages.DoesNotExist:
             return Response({"error": "this message does not exist"}, status = status.HTTP_404_NOT_FOUND)
         
         message.delete()

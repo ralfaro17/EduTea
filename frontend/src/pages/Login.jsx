@@ -113,7 +113,7 @@ function Login() {
   return (
     <>
       <Navbar />
-      <div className="mt-[6rem] justify-center flex mb-[2rem] flex-1">
+      <div className="mt-24 justify-center flex mb-8 flex-1">
         <form onSubmit={handleSubmit(onSubmit)}>
           <Card className="bg-beige">
             <CardHeader>
