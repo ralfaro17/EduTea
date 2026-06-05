@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Backend Debugger",
+            "type": "debugpy",
+            "request": "launch",
+            "args": [
+                "runserver"
+            ],
+            "django": true,
+            "autoStartBrowser": false,
+            "program": "${workspaceFolder}/backend/manage.py"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Frontend Debugger",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}/frontend",
+            "sourceMapPathOverrides": {
+                "webpack:///./~/*": "${workspaceFolder}/node_mcodules/*",
+                "webpack:///./src/*": "${workspaceFolder}/src/*",
+                "webpack:///*": "${workspaceFolder}/*"
+            }
+        }
+    ]
+}
