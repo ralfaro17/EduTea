@@ -148,6 +148,7 @@ dependencies = [
     { name = "tqdm" },
     { name = "twisted" },
     { name = "txaio" },
+    { name = "types-channels" },
     { name = "typing-extensions" },
     { name = "typing-inspection" },
     { name = "ujson" },
@@ -221,6 +222,7 @@ requires-dist = [
     { name = "tqdm", specifier = "==4.67.1" },
     { name = "twisted", specifier = "==25.5.0" },
     { name = "txaio", specifier = "==25.12.2" },
+    { name = "types-channels", specifier = ">=4.3.0.20260518" },
     { name = "typing-extensions", specifier = "==4.15.0" },
     { name = "typing-inspection", specifier = "==0.4.2" },
     { name = "ujson", specifier = "==5.11.0" },
@@ -1162,6 +1164,19 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/7f/67/ea9c9ddbaa3e0b4d53c91f8778a33e42045be352dc7200ed2b9aaa7dc229/txaio-25.12.2.tar.gz", hash = "sha256:9f232c21e12aa1ff52690e365b5a0ecfd42cc27a6ec86e1b92ece88f763f4b78", size = 117393, upload-time = "2025-12-09T15:03:26.527Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/50/05/bdb6318120cac9bf97779674f49035e0595d894b42d4c43b60637bafdb1f/txaio-25.12.2-py3-none-any.whl", hash = "sha256:5f6cd6c6b397fc3305790d15efd46a2d5b91cdbefa96543b4f8666aeb56ba026", size = 31208, upload-time = "2025-12-09T04:30:27.811Z" },
+]
+
+[[package]]
+name = "types-channels"
+version = "4.3.0.20260518"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "asgiref" },
+    { name = "django-stubs" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/16/35/e1048eb8dc607873682a60bb034870b5135b34ee7c788c77012b04e179fa/types_channels-4.3.0.20260518.tar.gz", hash = "sha256:c1045a7f6e36b127e0c1c776a1727734cbbd1e36c4340414985ad4c3dde48d20", size = 15549, upload-time = "2026-05-18T06:06:16.092Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fc/e3/939312e5a5f184fe54f17e323a81426d19eddde0ed25ed745fcba5c8e515/types_channels-4.3.0.20260518-py3-none-any.whl", hash = "sha256:98443bd8a5892d87b535b3b54a409441d401a60df3c426f82a79faae12bdd8e7", size = 21120, upload-time = "2026-05-18T06:06:15.045Z" },
 ]
 
 [[package]]
