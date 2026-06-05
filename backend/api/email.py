@@ -1,5 +1,5 @@
-from djoser import email, utils
-from djoser.conf import  settings
+from djoser import email, utils # type: ignore
+from djoser.conf import  settings # type: ignore
 from django.contrib.auth.tokens import default_token_generator
 from django.templatetags.static import static
 

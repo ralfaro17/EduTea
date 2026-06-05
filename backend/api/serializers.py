@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from djoser.serializers import UserCreateSerializer
+from djoser.serializers import UserCreateSerializer # type: ignore
 from .models import User, Rooms, Messages, Students_Rooms, Events, Badges, Submissions
 
 from typing import Type, cast

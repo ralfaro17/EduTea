@@ -84,24 +84,24 @@ class User(AbstractBaseUser, PermissionsMixin):
         ADMIN = 3
 
     # Django user field
-    date_joined = models.DateTimeField(
+    date_joined: models.DateTimeField = models.DateTimeField(
         default=timezone.now, editable=True, verbose_name="Date Joined"
     )
-    email = models.EmailField(max_length=255, unique=True)
-    username = models.CharField(max_length=50, blank=True, null=True)
-    first_name = models.CharField(max_length=150)
-    last_name = models.CharField(max_length=150)
-    is_active = models.BooleanField(default=True, verbose_name="Is Active")
-    is_staff = models.BooleanField(default=False, verbose_name="Is Staff")
-    is_superuser = models.BooleanField(
+    email: models.EmailField = models.EmailField(max_length=255, unique=True)
+    username: models.CharField = models.CharField(max_length=50, blank=True, null=True)
+    first_name: models.CharField = models.CharField(max_length=150)
+    last_name: models.CharField = models.CharField(max_length=150)
+    is_active: models.BooleanField = models.BooleanField(default=True, verbose_name="Is Active")
+    is_staff: models.BooleanField = models.BooleanField(default=False, verbose_name="Is Staff")
+    is_superuser: models.BooleanField = models.BooleanField(
         default=False, verbose_name="Is Superuser")
 
     # New user fields
-    user_type = models.IntegerField(
+    user_type: models.IntegerField = models.IntegerField(
         choices=UserTypes.choices, default=UserTypes.STUDENT, verbose_name="User Type"
     )
-    biography = models.CharField(max_length=512, blank=True, null=True)
-    has_profile_picture = models.BooleanField(
+    biography: models.CharField = models.CharField(max_length=512, blank=True, null=True)
+    has_profile_picture: models.BooleanField = models.BooleanField(
         default=False, verbose_name="Has Profile Picture"
     )
 
@@ -112,6 +112,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # Associated user manager
     objects: ClassVar[UserManager] = UserManager()
+
+    class Meta:
+        abstract = False
 
     # Methods
     def get_full_name(self):
@@ -139,22 +142,22 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Rooms(models.Model):
     objects = models.Manager()
-    room_name = models.CharField(max_length=64)
-    room_code = models.CharField(
+    room_name: models.CharField = models.CharField(max_length=64)
+    room_code: models.CharField = models.CharField(
         max_length=12, unique=True, default=generate_code)
-    description = models.CharField(max_length=512)
-    teacher = models.ForeignKey(
+    description: models.CharField = models.CharField(max_length=512)
+    teacher: models.ForeignKey = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="room_teacher", blank=True, null=True
     )
-    creation_date = models.DateTimeField(auto_now_add=True)
-    theme = models.CharField(max_length=32, blank=True)
-    schedule = models.CharField(max_length=128, blank=True)
-    is_active = models.BooleanField(default=True)
-    has_room_image = models.BooleanField(default=False)
-    students = models.ManyToManyField(
+    creation_date: models.DateTimeField = models.DateTimeField(auto_now_add=True)
+    theme: models.CharField = models.CharField(max_length=32, blank=True)
+    schedule: models.CharField = models.CharField(max_length=128, blank=True)
+    is_active: models.BooleanField = models.BooleanField(default=True)
+    has_room_image: models.BooleanField = models.BooleanField(default=False)
+    students: models.ManyToManyField = models.ManyToManyField(
         User, through="Students_Rooms", related_name="room_students"
     )
-    messages = models.ManyToManyField(
+    messages: models.ManyToManyField = models.ManyToManyField(
         User, through="Messages", related_name="room_messages"
     )
 
@@ -169,14 +172,14 @@ class Rooms(models.Model):
 
 class Messages(models.Model):
     objects = models.Manager()
-    room = models.ForeignKey(
+    room: models.ForeignKey = models.ForeignKey(
         Rooms, on_delete=models.CASCADE, related_name="message_room"
     )
-    author = models.ForeignKey(
+    author: models.ForeignKey = models.ForeignKey(
         User, on_delete=models.DO_NOTHING, related_name="message_author"
     )
-    content = models.TextField()
-    sent_date = models.DateTimeField(auto_now_add=True)
+    content: models.TextField = models.TextField()
+    sent_date: models.DateTimeField = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.content + " | " + self.author.email
@@ -184,13 +187,13 @@ class Messages(models.Model):
 
 class Students_Rooms(models.Model):
     objects = models.Manager()
-    student = models.ForeignKey(
+    student: models.ForeignKey = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="student_room_student"
     )
-    room = models.ForeignKey(
+    room: models.ForeignKey = models.ForeignKey(
         Rooms, on_delete=models.CASCADE, related_name="student_room_room"
     )
-    is_active = models.BooleanField(default=True)
+    is_active: models.BooleanField = models.BooleanField(default=True)
 
     def __str__(self) -> str:
         # TODO: Implement a more meaningful string representation for the model
@@ -198,24 +201,24 @@ class Students_Rooms(models.Model):
 
 
 class Events(models.Model):
-    room = models.ForeignKey(
+    room: models.ForeignKey = models.ForeignKey(
         Rooms, on_delete=models.CASCADE, related_name="event_room")
-    author = models.ForeignKey(
+    author: models.ForeignKey = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="event_author"
     )
-    title = models.CharField(max_length=64)
-    description = models.CharField(max_length=512)
-    event_date = models.DateTimeField(blank=True, null=True)
-    creation_date = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
-    is_optional = models.BooleanField(default=False)
-    points = models.IntegerField(
+    title: models.CharField = models.CharField(max_length=64)
+    description: models.CharField = models.CharField(max_length=512)
+    event_date: models.DateTimeField = models.DateTimeField(blank=True, null=True)
+    creation_date: models.DateTimeField = models.DateTimeField(auto_now_add=True)
+    is_active: models.BooleanField = models.BooleanField(default=True)
+    is_optional: models.BooleanField = models.BooleanField(default=False)
+    points: models.IntegerField = models.IntegerField(
         default=0,
         blank=True,
         null=True,
         validators=[MaxValueValidator(100), MinValueValidator(0)],
     )
-    submissions = models.ManyToManyField(
+    submissions: models.ManyToManyField = models.ManyToManyField(
         User, through="Submissions", related_name="event_submissions"
     )
 
@@ -225,10 +228,10 @@ class Events(models.Model):
 
 
 class Badges(models.Model):
-    name = models.CharField(max_length=32)
-    description = models.CharField(max_length=512)
-    icon = models.URLField()
-    users = models.ManyToManyField(User, related_name="badge_users")
+    name: models.CharField = models.CharField(max_length=32)
+    description: models.CharField = models.CharField(max_length=512)
+    icon: models.URLField = models.URLField()
+    users: models.ManyToManyField = models.ManyToManyField(User, related_name="badge_users")
 
     def __str__(self) -> str:
         # TODO: Implement a more meaningful string representation for the model
@@ -236,15 +239,15 @@ class Badges(models.Model):
 
 
 class Submissions(models.Model):
-    event = models.ForeignKey(
+    event: models.ForeignKey = models.ForeignKey(
         Events, on_delete=models.CASCADE, related_name="submission_event"
     )
-    user = models.ForeignKey(
+    user: models.ForeignKey = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="submission_user"
     )
-    submission = models.URLField()
-    submission_date = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
+    submission: models.URLField = models.URLField()
+    submission_date: models.DateTimeField = models.DateTimeField(auto_now_add=True)
+    is_active: models.BooleanField = models.BooleanField(default=True)
 
     def __str__(self) -> str:
         # TODO: Implement a more meaningful string representation for the model

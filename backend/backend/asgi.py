@@ -11,6 +11,7 @@ import os
 
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
+from typing import Any, cast
 from django.core.asgi import get_asgi_application
 import websocket.routing
 
@@ -25,7 +26,7 @@ application = ProtocolTypeRouter({
     'websocket': AuthMiddlewareStack(
         URLRouter(
             # Se establece la aplicación que funcionará de modo asíncrono y se le comparten los endpoints del mismo.
-            websocket.routing.websocket_urlpatterns
+            cast(list[Any], websocket.routing.websocket_urlpatterns)
         )
     ),
 })

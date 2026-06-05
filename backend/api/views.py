@@ -12,7 +12,7 @@ from rest_framework.throttling import UserRateThrottle
 # from rest_framework import permissions
 
 from django.contrib.auth import get_user_model
-from djoser.views import UserViewSet
+from djoser.views import UserViewSet # type: ignore
 # from string import ascii_uppercase
 
 from typing import Type, cast

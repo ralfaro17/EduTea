@@ -1,10 +1,9 @@
-# Here you'll find some useful functions to work with Geocafe AWS bucket
 from dotenv import load_dotenv
 from botocore.config import Config
 import os
 import boto3
 import requests
-import tempfile
+# import tempfile
 import io
 
 load_dotenv()
@@ -18,7 +17,7 @@ def object_exist(key):
     try:
         s3.head_object(Bucket=os.getenv("BUCKET"), Key=key)
         return True
-    except:
+    except s3.exceptions.ClientError:
         return False
 
 
@@ -34,20 +33,20 @@ def get_image(username):
         else:
             return get_default_image()
 
-    except Exception as e:
-        return (False, f"An error ocurred while trying to get a URL for the image: {e}")
+    except s3.exceptions.ClientError as e:
+        return (False, f"An error occurred while trying to get a URL for the image: {e}")
 
 
 # Obtains the default image URL for a user.
 def get_default_image():
     try:
-        search = f"user_images/default-profile-picture.png"
+        search = "user_images/default-profile-picture.png"
         
         # Check the object existence before generating the signed URL
         url = s3.generate_presigned_url('get_object', Params={'Bucket': os.getenv("BUCKET"), 'Key': search}, ExpiresIn=10000)
         return (True, url)
-    except Exception as e:
-        return (False, f"An error ocurred while trying to get a URL for the image: {e}")
+    except s3.exceptions.ClientError as e:
+        return (False, f"An error occurred while trying to get a URL for the image: {e}")
 
 
 # Deletes an image, this function is intended for account deletions.
@@ -57,8 +56,8 @@ def delete_image(username):
         s3.delete_object(Bucket=os.getenv("BUCKET"), Key=object)
         return (True, "The image was deleted successfully.")
     
-    except Exception as e:
-        return (False, f"An error ocurred while deleting the image: {e}")
+    except s3.exceptions.ClientError as e:
+        return (False, f"An error occurred while deleting the image: {e}")
 
 
 # Returns the URL of an image to the client after uploading it.
@@ -70,7 +69,7 @@ def upload_image(username, imagen):
         return (True, f"The image was uploaded successfully to {object_key}")
     
     except Exception as e:
-        return (False, f"An error ocurred while uploading the image: {e}")
+        return (False, f"An error occurred while uploading the image: {e}")
 
 
 # Obtains a list of files inside a user's folder.
@@ -85,7 +84,7 @@ def get_files(username):
         return(True, files)
 
     except Exception as e:
-        return (False, f"An error ocurred while trying to get the files of {username}: {e}")
+        return (False, f"An error occurred while trying to get the files of {username}: {e}")
 
 
 # returns the text content of a file
@@ -99,7 +98,7 @@ def get_file(username, filename):
             return (False, "The file does not exist.")
     
     except Exception as e:
-        return (False, f"An error ocurred while getting the file: {e}")
+        return (False, f"An error occurred while getting the file: {e}")
 
 
 # returns the text content of a file
@@ -113,7 +112,7 @@ def get_file_url(username, filename):
             return (False, "The file does not exist.")
     
     except Exception as e:
-        return (False, f"An error ocurred while getting the file: {e}")
+        return (False, f"An error occurred while getting the file: {e}")
 
 
 
@@ -125,13 +124,13 @@ def delete_file(username, filename):
         return (True, "The file was deleted successfully.")
     
     except Exception as e:
-        return (False, f"An error ocurred while deleting the file: {e}")
+        return (False, f"An error occurred while deleting the file: {e}")
 
 
 # Deletes all files inside a user's folder.
 def delete_files(username):
     try:
-        object = f"user_files/{username}/"
+        # object = f"user_files/{username}/"
         
         files = get_files(username)
         
@@ -143,7 +142,7 @@ def delete_files(username):
         return (True, "The files were deleted successfully.")
     
     except Exception as e:
-        return (False, f"An error ocurred while deleting the files: {e}")
+        return (False, f"An error occurred while deleting the files: {e}")
 
 
 # Returns the URL of a file to the client after uploading it.
@@ -162,4 +161,4 @@ def upload_file(username, file_content, file_name):
         return (True, f"The file was uploaded successfully to {object_key}")
     
     except Exception as e:
-        return (False, f"An error ocurred while uploading the file: {e}")
+        return (False, f"An error occurred while uploading the file: {e}")

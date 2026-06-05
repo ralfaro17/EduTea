@@ -1,16 +1,16 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-from api.models import *
-from datetime import datetime
+from api.models import User, Messages, Rooms
+# from datetime import datetime
 from dotenv import load_dotenv
 from openai import OpenAI
-from channels.db import database_sync_to_async, SyncToAsync
-import requests
+from channels.db import database_sync_to_async
+# import requests
 from rest_framework_simplejwt.tokens import AccessToken
-from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from rest_framework_simplejwt.exceptions import InvalidToken
 
 
-from rest_framework.authtoken.models import Token
+# from rest_framework.authtoken.models import Token
 import os 
 
 
@@ -38,23 +38,32 @@ def ask_chat_bot(mensaje):
     temperature=0.2,
     max_tokens=64,
     )
-    return response.choices[0].message.content.strip()
+    
+    if response.choices[0].message.content and len(response.choices) > 0:
+        return response.choices[0].message.content.strip()
+    else:
+        return "Error: No response from the chat bot."
 
 class ChatConsumer(AsyncWebsocketConsumer):
     
-    online_users_per_room = []
+    online_users_per_room: list[User] = []
     
     @database_sync_to_async
     def verify_token(self, token_dict):
         token = token_dict['token']
+        decoded_token: AccessToken | None = None
         try:
             decoded_token = AccessToken(token)
         except InvalidToken as e:
             print(f"Token is invalid or expired: {e}")
+        
         try:
-            user = self.user
-        except:
-            self.user = User.objects.get(id=decoded_token.payload.get("user_id"))
+            self.user
+        except AttributeError:
+            if decoded_token:
+                self.user = User.objects.get(id=decoded_token.payload.get("user_id"))
+            else:
+                raise InvalidToken("Token is invalid or expired.")
         if decoded_token:
             return True
         return False
@@ -110,7 +119,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.close()
     
     # Recibe un evento desde el cliente a través de "websocket.send".
-    async def receive(self, text_data):
+    async def receive(self, text_data=None, bytes_data=None):
+        if text_data is None:
+            return
         
         # El data es el objeto que manda el cliente, se le aplica json.loads para pasarlo a diccionario de Python.
         data = json.loads(text_data)

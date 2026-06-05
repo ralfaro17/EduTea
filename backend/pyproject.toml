@@ -1,12 +1,6 @@
 [tool.uv]
 exclude-newer = "5 days"
 
-[tool.pyrefly]
-project-includes = [
-    "**/*.py*",
-    "**/*.ipynb",
-]
-
 [project]
 name = "backend"
 version = "0.1.0"
@@ -35,7 +29,6 @@ dependencies = [
     "distro==1.9.0",
     "django==6.0",
     "django-cors-headers==4.9.0",
-    "django-stubs>=6.0.5",
     "djangorestframework==3.16.1",
     "djangorestframework-simplejwt==5.5.1",
     "djoser==2.3.3",
@@ -60,7 +53,6 @@ dependencies = [
     "pydantic-core==2.41.5",
     "pyjwt==2.10.1",
     "pyopenssl==25.3.0",
-    "pyrefly>=1.0.0",
     "python-dateutil==2.9.0.post0",
     "python-dotenv==1.2.1",
     "python3-openid==3.2.0",
@@ -77,11 +69,23 @@ dependencies = [
     "tqdm==4.67.1",
     "twisted==25.5.0",
     "txaio==25.12.2",
-    "types-channels>=4.3.0.20260518",
     "typing-extensions==4.15.0",
     "typing-inspection==0.4.2",
     "ujson==5.11.0",
     "urllib3==2.6.2",
     "whitenoise==6.11.0",
     "zope-interface==8.1.1",
+]
+
+[dependency-groups]
+dev = [
+    "boto3-stubs>=1.43.18",
+    "botocore-stubs>=1.43.14",
+    "channels-stubs>=0.1.4",
+    "django-stubs>=6.0.5",
+    "djangorestframework-stubs>=3.17.0",
+    "mypy>=2.1.0",
+    "ruff>=0.15.15",
+    "types-channels>=4.3.0.20260518",
+    "types-requests>=2.33.0.20260518",
 ]

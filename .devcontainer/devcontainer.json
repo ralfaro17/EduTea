@@ -67,7 +67,7 @@
 				"ms-python.vscode-pylance",
 				"ms-python.vscode-python-envs",
 				"charliermarsh.ruff",
-				"meta.pyrefly",
+				"ms-python.mypy-type-checker",
 				"njpwerner.autodocstring",
 				"batisteo.vscode-django",
 				"bibhasdn.django-snippets",
